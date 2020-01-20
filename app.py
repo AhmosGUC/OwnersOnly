@@ -18,13 +18,13 @@ def home():
 def crawl_olx():
     start_time = time.time()
     url = request.args.get('url')
-    # limit = int(request.args.get('l')) 
+    n_ads = int(request.args.get('l')) 
     if url is not None:
         page = requests.get(url, headers=headers)
         soup = BeautifulSoup(page.content, 'html.parser')
         items_owner = []
         items_broker = []
-        for item in soup.find_all('div', attrs={"class": "ads__item__info"}):
+        for item in soup.find_all('div', attrs={"class": "ads__item__info"})[:n_ads]:
             post_date = item.find_all('p',{"class":"ads__item__date"})[0].contents[0].strip().lower()
             print(post_date)
             if "today" in post_date or "yesterday" in post_date:
