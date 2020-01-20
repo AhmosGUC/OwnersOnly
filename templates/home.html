@@ -14,37 +14,430 @@
       
     <div class="container">
     <h1>Owners only</h1>
-    <form action="#" method="post" novalidate="novalidate"> 
-        <div class="row"> 
-            <div class="col-lg-12"> 
-                <div class="row"> 
-                    <div class="col-lg-3 col-md-3 col-sm-12 p-0"> 
-                        <input type="text" class="form-control search-slt" placeholder="Enter Pickup City"> </div> 
-                        <div class="col-lg-3 col-md-3 col-sm-12 p-0"> 
-                            <input type="text" class="form-control search-slt" placeholder="Enter Drop City"> 
-                        </div> 
-                        <div class="col-lg-3 col-md-3 col-sm-12 p-0"> 
-                            <select class="form-control search-slt" id="exampleFormControlSelect1"> 
-                                <option selected>choose category</option>
-                                <option value="">Apartments & Duplex for Sale</option>
-                                <option value="">Apartments & Duplex for Rent</option>
-                                <option value="">Villas For Sale</option>
-                                <option value="">Villas For Rent</option>
-                                <option value="">Vacation Homes for Sale</option>
-                                <option value="">Vacation Homes for Rent</option>
-                                <option value="">Commerical for Sale</option>
-                                <option value="">Commerical for Rent</option>
-                                <option value="">Buildings & Land</option> 
-                            </select> 
-                        </div> 
-                        <div class="col-lg-3 col-md-3 col-sm-12 p-0"> 
-                            <button type="button" class="btn btn-danger wrn-btn">Search</button> 
-                        </div> 
-                    </div> 
-                </div> 
+        <form target="_blank" action="/olxauto" method="GET" novalidate="novalidate"> 
+            <div class="row"> 
+                <div class="col-6">
+
+                  <div class="form-group">
+                    <label>Search Keyword</label>
+                    <input type="text" class="form-control" placeholder="Search Keyword" name="keyword">                    
+                  </div>
+
+                  <div class="form-group">
+                    <label>Catregory</label> 
+                    <select class="form-control search-slt" name="category"> 
+                        <option value="1">Apartments & Duplex for Sale</option>
+                        <option value="2">Apartments & Duplex for Rent</option>
+                        <option value="3">Villas For Sale</option>
+                        <option value="4">Villas For Rent</option>
+                        <option value="5">Vacation Homes for Sale</option>
+                        <option value="6">Vacation Homes for Rent</option>
+                        <option value="7">Commerical for Sale</option>
+                        <option value="8">Commerical for Rent</option>
+                        <option value="9">Buildings & Land</option> 
+                    </select> 
+                  </div>
+
+                  <div class="form-group">
+                    <label>Compound</label>
+                          <select class="form-control search-slt" name="compound"> 
+                              <option value="all">All</option>
+                              <option value="3">90 Avenue</option>
+                              <option value="2">2020 Compound</option>
+                              <option value="14">ALBA</option>
+                              <option value="31">AZAD</option>
+                              <option value="272">Abu Al-Hool</option>
+                              <option value="4">Aeon</option>
+                              <option value="274">Agora</option>
+                              <option value="5">Akoya</option>
+                              <option value="13">Al-Jazeera</option>
+                              <option value="6">Al Burouj</option>
+                              <option value="7">Al Diyar</option>
+                              <option value="8">Al Hayah</option>
+                              <option value="348">Al Maqsad</option>
+                              <option value="9">Al Maram Landmark</option>
+                              <option value="10">Al Rabwa</option>
+                              <option value="11">Al Riyadh Secon</option>
+                              <option value="12">Al Solaimaneyah Golf City</option>
+                              <option value="15">Alex West</option>
+                              <option value="16">Alico city</option>
+                              <option value="17">Allegria</option>
+                              <option value="18">Anakaji</option>
+                              <option value="19">Andalus</option>
+                              <option value="20">Arabella Park</option>
+                              <option value="275">Arabella Village</option>
+                              <option value="276">Arabia</option>
+                              <option value="21">Arabia Gate</option>
+                              <option value="22">Arena City Towers</option>
+                              <option value="23">Aria</option>
+                              <option value="24">Asala</option>
+                              <option value="25">Ashgar City</option>
+                              <option value="26">Ashrafeya</option>
+                              <option value="27">Asmarat Heights</option>
+                              <option value="28">Astoria Park</option>
+                              <option value="277">Aswar</option>
+                              <option value="29">Atika</option>
+                              <option value="278">Atrio</option>
+                              <option value="30">Avaris</option>
+                              <option value="345">Azzar</option>
+                              <option value="33">Badya Palm Hills</option>
+                              <option value="34">Baet El Masria</option>
+                              <option value="35">Bamboo Palm Hills</option>
+                              <option value="36">Baron City</option>
+                              <option value="37">Bavaria Town</option>
+                              <option value="38">Bedaya</option>
+                              <option value="39">Beit Al Watan</option>
+                              <option value="279">Bel Air - Sodic</option>
+                              <option value="40">Bellagio</option>
+                              <option value="41">Beta Greens</option>
+                              <option value="42">Beverly Hills</option>
+                              <option value="43">Bienestar</option>
+                              <option value="44">Bloomfields</option>
+                              <option value="280">Bright City</option>
+                              <option value="45">Cairo Festival City</option>
+                              <option value="46">Cairo Town</option>
+                              <option value="47">Capital Gardens</option>
+                              <option value="281">Capital Gate</option>
+                              <option value="48">Capital Heights 2</option>
+                              <option value="282">Casa Verde</option>
+                              <option value="49">Castle Landmark</option>
+                              <option value="50">Catalan</option>
+                              <option value="51">Catalya</option>
+                              <option value="344">Century City</option>
+                              <option value="52">Cleo East</option>
+                              <option value="53">Cleopatra Palace</option>
+                              <option value="54">Comex Gardens</option>
+                              <option value="55">Concord Gardens</option>
+                              <option value="56">Continental Gardens</option>
+                              <option value="57">County</option>
+                              <option value="58">Creek Park</option>
+                              <option value="59">Crystal Plaza</option>
+                              <option value="60">Dar Misr</option>
+                              <option value="61">Degla Gardens</option>
+                              <option value="62">Degla Landmark</option>
+                              <option value="63">Degla Palms</option>
+                              <option value="64">Degla Towers</option>
+                              <option value="65">Degla View</option>
+                              <option value="283">Dimora</option>
+                              <option value="66">Diplomats</option>
+                              <option value="67">District 5 Compound</option>
+                              <option value="68">Divina Gardens</option>
+                              <option value="69">Dreamland</option>
+                              <option value="70">Dyar</option>
+                              <option value="75">EL Patio 2</option>
+                              <option value="76">EL Patio 3</option>
+                              <option value="77">EL Patio 4</option>
+                              <option value="78">EL Patio 5</option>
+                              <option value="289">EL Patio 6</option>
+                              <option value="79">EL Patio 7</option>
+                              <option value="80">EL Patio Casa</option>
+                              <option value="81">EL Patio ORO</option>
+                              <option value="82">EL Patio Prime</option>
+                              <option value="71">Eastown</option>
+                              <option value="284">Easy Life</option>
+                              <option value="72">El Ashgar District</option>
+                              <option value="73">El Karma</option>
+                              <option value="285">El Karma 2</option>
+                              <option value="286">El Karma 3</option>
+                              <option value="287">El Karma 4</option>
+                              <option value="74">El Ofok El Gadid</option>
+                              <option value="288">El Patio</option>
+                              <option value="83">El Shorouk Springs</option>
+                              <option value="84">Emerald Park</option>
+                              <option value="85">Entrada</option>
+                              <option value="86">Eshraqa</option>
+                              <option value="87">Etapa</option>
+                              <option value="88">Ethmar Compound</option>
+                              <option value="89">Etlalah</option>
+                              <option value="90">Etoile de Ville</option>
+                              <option value="91">Evergreen</option>
+                              <option value="92">Family City</option>
+                              <option value="93">Fifth Square</option>
+                              <option value="94">Fleur De Ville</option>
+                              <option value="95">Florenta</option>
+                              <option value="96">Flowers Park</option>
+                              <option value="271">Forty West - Sodic</option>
+                              <option value="290">Fountain Park</option>
+                              <option value="291">Future Gate</option>
+                              <option value="292">Galleria</option>
+                              <option value="97">Galleria Moon Valley</option>
+                              <option value="98">Garden Hills</option>
+                              <option value="99">Gardenia</option>
+                              <option value="293">Gardenia Springs</option>
+                              <option value="100">Gharb Golf</option>
+                              <option value="294">Gharb Golf & Extension</option>
+                              <option value="101">Gladios Garden</option>
+                              <option value="295">Golden Heights</option>
+                              <option value="102">Grand Gate</option>
+                              <option value="103">Grand Heights</option>
+                              <option value="296">Grand Residence</option>
+                              <option value="104">Granda</option>
+                              <option value="105">Green Yard</option>
+                              <option value="350">Hadaba</option>
+                              <option value="297">Haletown</option>
+                              <option value="352">Haptown</option>
+                              <option value="106">Haram City</option>
+                              <option value="298">Hayah Residence</option>
+                              <option value="299">Hayat Heights</option>
+                              <option value="107">Hayati Residence</option>
+                              <option value="108">Heliopolis Residence</option>
+                              <option value="109">High City</option>
+                              <option value="110">Highland Park</option>
+                              <option value="111">Hyde Park New Cairo</option>
+                              <option value="112">IL Bosco</option>
+                              <option value="113">Il Mondo</option>
+                              <option value="114">Isola</option>
+                              <option value="115">Italian Square</option>
+                              <option value="116">Jasmine City</option>
+                              <option value="300">Jedar</option>
+                              <option value="117">Jeera</option>
+                              <option value="301">Jewar</option>
+                              <option value="118">Jewels</option>
+                              <option value="119">Jodran</option>
+                              <option value="120">Joulz</option>
+                              <option value="302">Karma Residence</option>
+                              <option value="121">Katameya Breeze</option>
+                              <option value="122">Katameya Dunes</option>
+                              <option value="123">Katameya Heights</option>
+                              <option value="124">Katameya Hills</option>
+                              <option value="125">Katameya Plaza</option>
+                              <option value="126">Kattameya Gardens</option>
+                              <option value="127">Kattameya Gate</option>
+                              <option value="128">Kattameya Palms</option>
+                              <option value="129">Kattameya Residence</option>
+                              <option value="130">Kenz</option>
+                              <option value="131">Korba Heights</option>
+                              <option value="133">La Capital</option>
+                              <option value="134">La Fontaine Province</option>
+                              <option value="135">La Mirada</option>
+                              <option value="136">La Nouva Vista</option>
+                              <option value="137">La Rose</option>
+                              <option value="138">La Terra</option>
+                              <option value="139">La Verde</option>
+                              <option value="140">La Vida</option>
+                              <option value="141">La Vista City</option>
+                              <option value="142">Lake Side</option>
+                              <option value="143">Lake View</option>
+                              <option value="144">Lakefront</option>
+                              <option value="303">Lake view Residence</option>
+                              <option value="145">Lavande</option>
+                              <option value="146">Lavida</option>
+                              <option value="147">Layan</option>
+                              <option value="148">Le Ciel</option>
+                              <option value="149">Le Jardin</option>
+                              <option value="150">Le Jour</option>
+                              <option value="151">Leena Springs</option>
+                              <option value="152">Legenda</option>
+                              <option value="304">Lereve</option>
+                              <option value="153">Les Rois</option>
+                              <option value="154">Life Garden</option>
+                              <option value="132">L’Avenir</option>
+                              <option value="155">Maadi Gardens</option>
+                              <option value="156">Maadi Grand City</option>
+                              <option value="157">Maadi View</option>
+                              <option value="305">Madinaty</option>
+                              <option value="158">Mahika</option>
+                              <option value="159">Marina City</option>
+                              <option value="160">Marvel City</option>
+                              <option value="161">Mashareq</option>
+                              <option value="162">Maxim Country Club</option>
+                              <option value="163">May Fair</option>
+                              <option value="165">Medallion</option>
+                              <option value="338">Mena City Central</option>
+                              <option value="166">Mena Garden City</option>
+                              <option value="167">Mena Residence</option>
+                              <option value="306">Midtown</option>
+                              <option value="168">Midtown Condo</option>
+                              <option value="169">Midtown Sky</option>
+                              <option value="346">Midtown Solo</option>
+                              <option value="307">Mirage City</option>
+                              <option value="170">Mirage Residence</option>
+                              <option value="171">Mivida</option>
+                              <option value="172">Moon City</option>
+                              <option value="308">Moon Valley</option>
+                              <option value="173">Mountain Plaza</option>
+                              <option value="339">Mountain View 1</option>
+                              <option value="340">Mountain View 2</option>
+                              <option value="309">Mountain View 3</option>
+                              <option value="174">Mountain View Chillout Park</option>
+                              <option value="310">Mountain View Hyde Park</option>
+                              <option value="175">Mountain View iCity</option>
+                              <option value="311">Nakheel</option>
+                              <option value="176">Neopolis</option>
+                              <option value="312">Nest Cairo</option>
+                              <option value="177">New Giza</option>
+                              <option value="178">Next Point</option>
+                              <option value="1">Not in Compound</option>
+                              <option value="181">OIA</option>
+                              <option value="179">O West</option>
+                              <option value="180">October Plaza Sodic</option>
+                              <option value="353">Odyssia</option>
+                              <option value="182">One Kattameya</option>
+                              <option value="183">Opera City</option>
+                              <option value="184">Operetta Greens</option>
+                              <option value="185">Oriana</option>
+                              <option value="341">Palm Hills Katameya</option>
+                              <option value="342">Palm Hills Katameya Extension</option>
+                              <option value="186">Palm Hills New Cairo</option>
+                              <option value="313">Palm Parks</option>
+                              <option value="187">Paradise</option>
+                              <option value="188">Park Lane</option>
+                              <option value="314">Park View</option>
+                              <option value="315">Point 90</option>
+                              <option value="189">Porto Cairo</option>
+                              <option value="316">Porto New Cairo</option>
+                              <option value="190">Porto October</option>
+                              <option value="191">Promenade Maadi</option>
+                              <option value="192">Promenade New Cairo</option>
+                              <option value="193">Pukka</option>
+                              <option value="194">Rawdat Zayed</option>
+                              <option value="195">Rayhanah Avenue</option>
+                              <option value="196">Rayhanah Plaza</option>
+                              <option value="197">Rayhanah Residence</option>
+                              <option value="198">Rayos</option>
+                              <option value="199">Reem Residence</option>
+                              <option value="200">Regents Park</option>
+                              <option value="317">Rehab City</option>
+                              <option value="201">Rehab October City</option>
+                              <option value="202">Reve</option>
+                              <option value="203">Rhodes</option>
+                              <option value="204">Rich Mont</option>
+                              <option value="205">Ritage</option>
+                              <option value="347">Rivan</option>
+                              <option value="206">River Walk</option>
+                              <option value="207">Riviera Heights</option>
+                              <option value="208">Rock Eden</option>
+                              <option value="209">Rock Ville</option>
+                              <option value="210">Roses</option>
+                              <option value="211">Royal Lagoon</option>
+                              <option value="212">Royal Maxim</option>
+                              <option value="213">Safwa Dream</option>
+                              <option value="214">Sama</option>
+                              <option value="215">Sarai</option>
+                              <option value="216">Sarayat El Kattameya</option>
+                              <option value="217">Scenario</option>
+                              <option value="218">Seasons</option>
+                              <option value="219">Sedra</option>
+                              <option value="220">Sephora Heights</option>
+                              <option value="221">Serrano</option>
+                              <option value="222">Shorouk Gardens</option>
+                              <option value="354">Sky Condos Sodic</option>
+                              <option value="318">Sky View Premier</option>
+                              <option value="223">Skyline</option>
+                              <option value="224">Smart Life</option>
+                              <option value="319">Smart Life Town</option>
+                              <option value="349">Sodic East</option>
+                              <option value="225">Sodic Westown</option>
+                              <option value="226">Spanish District</option>
+                              <option value="227">Stella Compounds</option>
+                              <option value="320">Stella New Cairo</option>
+                              <option value="228">Stone Park</option>
+                              <option value="229">Stone Residence</option>
+                              <option value="230">Sueno</option>
+                              <option value="231">Sukoon</option>
+                              <option value="351">Sun Capital</option>
+                              <option value="232">Sun City</option>
+                              <option value="321">Sun City Gardens</option>
+                              <option value="233">Sun Gate</option>
+                              <option value="234">Sun Rise</option>
+                              <option value="235">Swan Lake</option>
+                              <option value="236">Tag Sultan</option>
+                              <option value="237">Taj City</option>
+                              <option value="238">Tala</option>
+                              <option value="322">Tamr Henna</option>
+                              <option value="239">Terrace Smouha</option>
+                              <option value="240">The Address East</option>
+                              <option value="323">The Axis</option>
+                              <option value="241">The Capital Way</option>
+                              <option value="242">The City</option>
+                              <option value="324">The Core</option>
+                              <option value="243">The Crown</option>
+                              <option value="244">The Estates</option>
+                              <option value="245">The Icon Residence</option>
+                              <option value="246">The Loft</option>
+                              <option value="247">The Square</option>
+                              <option value="325">The Strip - Sodic</option>
+                              <option value="326">The Strip II - Sodic</option>
+                              <option value="327">The Village</option>
+                              <option value="328">The Walk Trenta</option>
+                              <option value="248">The Waterway Compound</option>
+                              <option value="249">Tiara Residence</option>
+                              <option value="250">Tijan</option>
+                              <option value="251">Town Gate</option>
+                              <option value="329">Trevi</option>
+                              <option value="343">Trio Gardens</option>
+                              <option value="252">Uphill Residence</option>
+                              <option value="253">Upside Maadi</option>
+                              <option value="254">Uptown Cairo</option>
+                              <option value="255">Upville</option>
+                              <option value="330">VGK</option>
+                              <option value="256">Valeria Maadi</option>
+                              <option value="331">Village Avenue</option>
+                              <option value="332">Village Gardens Katameya</option>
+                              <option value="333">Village Gate</option>
+                              <option value="257">Villar Residence</option>
+                              <option value="258">Villette</option>
+                              <option value="259">Villino</option>
+                              <option value="260">Vinci</option>
+                              <option value="261">Vivienda</option>
+                              <option value="262">Wahet El Ryhan</option>
+                              <option value="263">West Gate</option>
+                              <option value="264">White Sand</option>
+                              <option value="334">Woodville</option>
+                              <option value="269">ZED Towers</option>
+                              <option value="335">Zahret El Tagamo</option>
+                              <option value="336">Zahwa</option>
+                              <option value="265">Zavani</option>
+                              <option value="266">Zayed 2000</option>
+                              <option value="267">Zayed Dunes</option>
+                              <option value="268">Zayed Regency</option>
+                              <option value="270">Zizinia El Mostakbal</option>
+                              <option value="337">Zizinia Gardens</option>
+                          </select> 
+                  </div>
+                </div>
+                  <div class="col-3">
+                      <div class="form-group">
+                        <label>Area From</label>
+                        <input type="number" class="form-control" placeholder="area min" name="areafrom">
+                        <label>Area To</label>
+                        <input type="number" class="form-control" placeholder="area max" name="areato">
+                      </div>
+
+                      <div class="form-group">
+                        <label>Price From</label>
+                        <input type="number" class="form-control" placeholder="price min" name="pricefrom">
+                        <label>Price To</label>
+                        <input type="number" class="form-control" placeholder="price max" name="priceto">
+                      </div>
+                  </div>
+                  <div class="col-3">
+                      <div class="form-group">
+                        <label>Payment Option</label>
+                        <select class="form-control search-slt" name="paymentoption">
+                            <option selected value="123">All</option>  
+                            <option value="1">Cash</option>  
+                            <option value="2">Installments</option>  
+                            <option value="3">Cash or Installments</option>  
+                        </select>
+                      </div>
+                  </div>
+                  
             </div> 
-        </form> 
+            <input type="submit" class="btn btn-danger wrn-btn"> 
+        </form>
+    
     </div>
+    <hr />
+    <div class="container">
+      <form target="_blank" action="/olxa" method="GET" novalidate="novalidate">
+          <div class="form-group">
+              <label>Search Using Link</label>
+              <input type="text" class="form-control" placeholder="Put OLX Link Here" name="url">                    
+          </div>
+          <input type="submit" class="btn btn-danger wrn-btn"> 
+      </form>      
+    </div>    
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

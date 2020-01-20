@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Owners only</title>
+  </head>
+  <body>
+      
+    <div class="container">
+        <div class="row">
+            <h4>Owners Ads : {{ data[2] }} ads And Broker Ads : {{ data[3] }}</h4>
+        </div>
+        <div class="row">
+            <a class="badge badge-primary" target="_blank" href="{{ data[4] }}"> Olx Original Link </a>
+        </div>
+        <div class="row">
+            <h1>Owners only</h1>
+            <div class="card-columns">
+                {% for item in data[0] %}
+                    <div class="card">
+                        <div class="card-header"><a href="{{ item['url'] }}">{{ item['title'] }}</a></div>
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="{{item['details']['user profile']}}">{{ item['details']['user name'] }}</a></h5>
+                            <p class="card-text">Number of Ads : {{ item['details']['number of ads'] }} - {% if item['details']['Broker']=="Yes" %}Broker{% else %}Owner{% endif %}</p>
+                            <p class="card-text">Location : {{ item['location'] }}</p>
+                            <p class="card-text">Price : {{ item['price'] }}</p>
+                            <p class="card-text">Description : <small>{{ item['details']['description'][0:100] }}</small></p>
+                        </div>
+                    </div>
+                {% endfor %}  
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <h1>Brokers only</h1>
+            <div class="card-columns">
+                {% for item in data[1] %}
+                    <div class="card">
+                        <div class="card-header bg-dark"><a href="{{ item['url'] }}">{{ item['title'] }}</a></div>
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="{{item['details']['user profile']}}">{{ item['details']['user name'] }}</a></h5>
+                            <p class="card-text">Number of Ads : {{ item['details']['number of ads'] }} - {% if item['details']['Broker']=="Yes" %}Broker{% else %}Owner{% endif %}</p>
+                            <p class="card-text">Location : {{ item['location'] }}</p>
+                            <p class="card-text">Price : {{ item['price'] }}</p>
+                            <p class="card-text">Description : <small>{{ item['details']['description'][0:100] }}</small></p>
+                        </div>
+                    </div>
+                {% endfor %}  
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>
