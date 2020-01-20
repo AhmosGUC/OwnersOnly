@@ -78,7 +78,7 @@ def item_details_olx(soup):
     else:
         dict.update({"contain keywords en":"no"})
     
-    if "\xd9\x85\xd8\xa7\xd9\x84\xd9\x83" in ad_desc_ar :
+    if b'\xd9\x85\xd8\xa7\xd9\x84\xd9\x83' in ad_desc_ar :
         dict.update({"contain keywords ar":"yes"})
     else:
         dict.update({"contain keywords ar":"no"})
