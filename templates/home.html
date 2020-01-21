@@ -26,6 +26,7 @@
                   <div class="form-group">
                     <label>Catregory</label> 
                     <select class="form-control search-slt" name="category"> 
+                        <option selected value="0">Any</option>
                         <option value="1">Apartments & Duplex for Sale</option>
                         <option value="2">Apartments & Duplex for Rent</option>
                         <option value="3">Villas For Sale</option>
@@ -35,6 +36,71 @@
                         <option value="7">Commerical for Sale</option>
                         <option value="8">Commerical for Rent</option>
                         <option value="9">Buildings & Land</option> 
+                    </select> 
+                  </div>
+                  <div class="form-group">
+                    <label>Location</label> 
+                    <select class="form-control search-slt" name="location"> 
+                        <option selected value="any">All</option>
+                        <option value="el-tagamoa">el-tagamoa</option>
+                        <option value="heliopolis">heliopolis</option>
+                        <option value="Badr-City">Badr-City</option>
+                        <option value="gesr-al-suez">gesr-al-suez</option>
+                        <option value="new-nozha">new-nozha</option>
+                        <option value="dar-al-salaam">dar-al-salaam</option>
+                        <option value="mostakbal-city">mostakbal-city</option>
+                        <option value="waili">waili</option>
+                        <option value="basateen">basateen</option>
+                        <option value="ramses-ramses-extension">ramses-ramses-extension</option>
+                        <option value="darb-al-ahmar">darb-al-ahmar</option>
+                        <option value="tura">tura</option>
+                        <option value="nasr-city">nasr-city</option>
+                        <option value="shorouk-city">shorouk-city</option>
+                        <option value="mokattam">mokattam</option>
+                        <option value="Sheraton">Sheraton</option>
+                        <option value="salam-city">salam-city</option>
+                        <option value="zamalek">zamalek</option>
+                        <option value="10th-ramadan-city">10th-ramadan-city</option>
+                        <option value="almazah">almazah</option>
+                        <option value="al-amiriyyah">al-amiriyyah</option>
+                        <option value="bab-al-shereia">bab-al-shereia</option>
+                        <option value="gamaleya-cairo">gamaleya-cairo</option>
+                        <option value="garden-city">garden-city</option>
+                        <option value="Madinaty">Madinaty</option>
+                        <option value="obour-city">obour-city</option>
+                        <option value="ain-shams">ain-shams</option>
+                        <option value="helmeyat-el-zaytoun">helmeyat-el-zaytoun</option>
+                        <option value="hadayek-helwan">hadayek-helwan</option>
+                        <option value="ezbet-el-nakhl">ezbet-el-nakhl</option>
+                        <option value="katameya">katameya</option>
+                        <option value="abasiya">abasiya</option>
+                        <option value="sharabeya">sharabeya</option>
+                        <option value="boulaq">boulaq</option>
+                        <option value="ma-sara">ma-sara</option>
+                        <option value="tebeen">tebeen</option>
+                        <option value="maadi">maadi</option>
+                        <option value="downtown-cairo">downtown-cairo</option>
+                        <option value="helwan">helwan</option>
+                        <option value="shubra">shubra</option>
+                        <option value="hadayek-al-kobba">hadayek-al-kobba</option>
+                        <option value="15-may-city">15-may-city</option>
+                        <option value="zawya-al-hamra">zawya-al-hamra</option>
+                        <option value="sayeda-zeinab">sayeda-zeinab</option>
+                        <option value="masr-al-kadema">masr-al-kadema</option>
+                        <option value="helmeya-al-gadeda">helmeya-al-gadeda</option>
+                        <option value="ataba">ataba</option>
+                        <option value="darrasa">darrasa</option>
+                        <option value="rehab-city">rehab-city</option>
+                        <option value="new-capital-city">new-capital-city</option>
+                        <option value="zahraa-al-maadi">zahraa-al-maadi</option>
+                        <option value="marg">marg</option>
+                        <option value="matareya-cairo">matareya-cairo</option>
+                        <option value="al-manial">al-manial</option>
+                        <option value="new-heliopolis">new-heliopolis</option>
+                        <option value="qasr-al-nil">qasr-al-nil</option>
+                        <option value="rod-al-farag">rod-al-farag</option>
+                        <option value="el-fostat">el-fostat</option>
+                        <option value="moski">moski</option> 
                     </select> 
                   </div>
 
@@ -430,7 +496,7 @@
     </div>
     <hr />
     <div class="container">
-      <form target="_blank" action="/olxa" method="GET" novalidate="novalidate">
+      <form target="_blank" action="/olx" method="GET" novalidate="novalidate">
           <div class="form-group">
               <label>Search Using Link</label>
               <input type="text" class="form-control" placeholder="Put OLX Link Here" name="url">                    

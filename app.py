@@ -25,14 +25,12 @@ def crawl_olx():
     start_time = time.time()
     url = request.args['url']
     print(url)
-    # n_ads = int(request.args.get('l')) 
-    n_ads = 10 
     if url is not None:
         page = requests.get(url, headers=headers)
         soup = BeautifulSoup(page.content, 'html.parser')
         items_owner = []
         items_broker = []
-        for item in soup.find_all('div', attrs={"class": "ads__item__info"})[:n_ads]:
+        for item in soup.find_all('div', attrs={"class": "ads__item__info"}):
             post_date = item.find_all('p',{"class":"ads__item__date"})[0].contents[0].strip().lower()
             title = item.find_all('a',{"class":"ads__item__ad--title"})[0].get('title').strip()
             # title = title.encode("utf-8")
@@ -139,17 +137,28 @@ def make_url(args):
     area_to = args['areato']
     keyword = args['keyword']
     payment_option = args['paymentoption']
+    location = args['location']
 
-    url = "https://www.olx.com.eg/en/properties/"+conv_cat(category)+"?"
+    url = "https://www.olx.com.eg/en/properties/"
+    url = url + conv_cat(category)
+    if(not location =="any"):
+        url = url + location +"/?"
+    else:
+        url = url + "?"    
     if(not compound == 'all'):
-        url= url+ "search[filter_enum_compound]="+compound+"&"
-    url= url + "search[filter_float_price:from]="+price_from+"&"
-    url= url + "search[filter_float_price:to]="+price_to+"&"
-    url= url + "search[filter_float_area:from]="+area_from+"&"
-    url= url + "search[filter_float_area:to]="+area_to+"&"
+        url= url+ "&search[filter_enum_compound]="+compound
+    if(not price_from == ""):
+        url= url + "&search[filter_float_price:from]="+price_from
+    if(not price_to == ""):
+        url= url + "&search[filter_float_price:to]="+price_to
+    if(not area_from == ""):
+        url= url + "&search[filter_float_area:from]="+area_from
+    if(not area_to == ""):
+        url= url + "&search[filter_float_area:to]="+area_to
     if(not payment_option == "123"):
-        url= url + "search[filter_enum_payment_options]="+payment_option+"&"
-    url= url + "q="+keyword
+        url= url + "&search[filter_enum_payment_options]="+payment_option
+    if(not keyword == ""):
+        url= url + "&q="+keyword
 
     return url
 
