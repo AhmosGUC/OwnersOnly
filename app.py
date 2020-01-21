@@ -21,7 +21,8 @@ def olxauto():
     print("Here auto")
     url = make_url(request.args.to_dict())
     n_pages = request.args['n_pages']
-    return redirect(url_for('.crawl_olx', url=url,n_pages=n_pages))
+    req_dates = request.args['req_dates']
+    return redirect(url_for('.crawl_olx', url=url,n_pages=n_pages,req_dates = req_dates))
 
 @app.route('/olx')
 def crawl_olx():
@@ -32,7 +33,13 @@ def crawl_olx():
         n_pages = int(request.args['n_pages'].encode('utf-8'))
     except:
         print("Error")
-    # req_dates = request.args['req_dates']
+    req_dates = request.args['req_dates']
+
+    if ( req_dates == "1" ):
+        date_flag=True
+    else:
+        date_flag=False    
+
     if url is not None:
         page = requests.get(url, headers=headers)
         soup = BeautifulSoup(page.content, 'html.parser')    
@@ -51,7 +58,7 @@ def crawl_olx():
             n_pages = min([max_pages,n_pages])   
 
         items_owner = []
-        items_broker = []
+        items_broker = []  
         for p in range(1,n_pages+1):
             print(p)
             url = url + "&page=" + str(p)
@@ -62,33 +69,62 @@ def crawl_olx():
                 title = item.find_all('a',{"class":"ads__item__ad--title"})[0].get('title').strip()
                 # title = title.encode("utf-8")
                 print(title,post_date)
-                p = item.find_all('p', attrs={"class": "ads__item__price"})[0]
-                price = p.getText().lower().replace('\t', '').replace('\n', '').replace('negotiable', '').replace('egp',
-                                                                                                                    '')
-                loc = item.find_all('p', attrs={"class": "ads__item__location"})[0]
-                location = loc.getText().lower().replace('\t', '').replace('\n', '')
-                link  = item.find_all('a', href=True)[0]
-                item_link = link['href']
-                item_link = item_link.replace(".eg/", ".eg/en/")
-                print(item_link)
-                item_page = requests.get(item_link, headers=headers)
-                soup_page = BeautifulSoup(item_page.content, 'html.parser')
+                if date_flag:
+                    if "today" in post_date or "yesterday" in post_date:
+                        p = item.find_all('p', attrs={"class": "ads__item__price"})[0]
+                        price = p.getText().lower().replace('\t', '').replace('\n', '').replace('negotiable', '').replace('egp',
+                                                                                                                            '')
+                        loc = item.find_all('p', attrs={"class": "ads__item__location"})[0]
+                        location = loc.getText().lower().replace('\t', '').replace('\n', '')
+                        link  = item.find_all('a', href=True)[0]
+                        item_link = link['href']
+                        item_link = item_link.replace(".eg/", ".eg/en/")
+                        print(item_link)
+                        item_page = requests.get(item_link, headers=headers)
+                        soup_page = BeautifulSoup(item_page.content, 'html.parser')
 
-                info = {
-                    "title":title,
-                    "url": item_link,
-                    "price": price,
-                    "location": location,
-                    "post_date": post_date
-                }
-                details = item_details_olx(soup_page)             
-                info.update({'details': details })
-                check = details["Broker"]
-                if "Yes" in check:
-                    items_broker.append(info)
+                        info = {
+                            "title":title,
+                            "url": item_link,
+                            "price": price,
+                            "location": location,
+                            "post_date": post_date
+                        }
+                        details = item_details_olx(soup_page)             
+                        info.update({'details': details })
+                        check = details["Broker"]
+                        if "Yes" in check:
+                            items_broker.append(info)
+                        else:
+                            items_owner.append(info)      
                 else:
-                    items_owner.append(info)      
-            
+                    p = item.find_all('p', attrs={"class": "ads__item__price"})[0]
+                    price = p.getText().lower().replace('\t', '').replace('\n', '').replace('negotiable', '').replace('egp',
+                                                                                                                        '')
+                    loc = item.find_all('p', attrs={"class": "ads__item__location"})[0]
+                    location = loc.getText().lower().replace('\t', '').replace('\n', '')
+                    link  = item.find_all('a', href=True)[0]
+                    item_link = link['href']
+                    item_link = item_link.replace(".eg/", ".eg/en/")
+                    print(item_link)
+                    item_page = requests.get(item_link, headers=headers)
+                    soup_page = BeautifulSoup(item_page.content, 'html.parser')
+
+                    info = {
+                        "title":title,
+                        "url": item_link,
+                        "price": price,
+                        "location": location,
+                        "post_date": post_date
+                    }
+                    details = item_details_olx(soup_page)             
+                    info.update({'details': details })
+                    check = details["Broker"]
+                    if "Yes" in check:
+                        items_broker.append(info)
+                    else:
+                        items_owner.append(info)      
+
         end_time = time.time()
         delta_time = end_time-start_time    
         # return jsonify({'Brokers': items_broker, 'Owners' : items_owner, 'count_owners': items_owner.__len__(),'count_brokers': items_broker.__len__(),'atime':delta_time})
