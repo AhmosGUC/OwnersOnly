@@ -52,12 +52,12 @@
                             <p class="card-text">Location : {{ item['location'] }}</p>
                             <p class="card-text">Price : {{ item['price'] }}</p>
                             <p class="card-text">Description : <small>{{ item['details']['description'][0:100] }}</small></p>
-                            <div class="card-footer">
-                                <small class="text-muted">{{ item['post_date'] }}</small>
-                            </div>
                         </div>
-                        {% endfor %}  
+                        <div class="card-footer">
+                            <small class="text-muted">{{ item['post_date'] }}</small>
+                        </div>
                     </div>
+                {% endfor %}  
             </div>
         </div>
     </div>
