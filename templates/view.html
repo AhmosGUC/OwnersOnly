@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>Owners only</title>
+    <title>Results</title>
   </head>
   <body>
       
@@ -27,10 +27,13 @@
                         <div class="card-header"><a href="{{ item['url'] }}">{{ item['title'] }}</a></div>
                         <div class="card-body">
                             <h5 class="card-title"><a href="{{item['details']['user profile']}}">{{ item['details']['user name'] }}</a></h5>
-                            <p class="card-text">Number of Ads : {{ item['details']['number of ads'] }} - {% if item['details']['Broker']=="Yes" %}Broker{% else %}Owner{% endif %}</p>
+                            <p class="card-text">Number of Ads : {{ item['details']['number of ads'] }} - <p class="text-success font-weight-bold">Owner</p></p>
                             <p class="card-text">Location : {{ item['location'] }}</p>
                             <p class="card-text">Price : {{ item['price'] }}</p>
                             <p class="card-text">Description : <small>{{ item['details']['description'][0:100] }}</small></p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">{{ item['post_date'] }}</small>
                         </div>
                     </div>
                 {% endfor %}  
@@ -41,14 +44,17 @@
             <h1>Brokers only</h1>
             <div class="card-columns">
                 {% for item in data[1] %}
-                    <div class="card">
-                        <div class="card-header bg-dark"><a href="{{ item['url'] }}">{{ item['title'] }}</a></div>
+                    <div class="card border-dark">
+                        <div class="card-header"><a href="{{ item['url'] }}">{{ item['title'] }}</a></div>
                         <div class="card-body">
                             <h5 class="card-title"><a href="{{item['details']['user profile']}}">{{ item['details']['user name'] }}</a></h5>
-                            <p class="card-text">Number of Ads : {{ item['details']['number of ads'] }} - {% if item['details']['Broker']=="Yes" %}Broker{% else %}Owner{% endif %}</p>
+                            <p class="card-text">Number of Ads : {{ item['details']['number of ads'] }} - <p class="text-danger font-weight-bold">Broker</p></p>
                             <p class="card-text">Location : {{ item['location'] }}</p>
                             <p class="card-text">Price : {{ item['price'] }}</p>
                             <p class="card-text">Description : <small>{{ item['details']['description'][0:100] }}</small></p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">{{ item['post_date'] }}</small>
                         </div>
                     </div>
                 {% endfor %}  

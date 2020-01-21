@@ -18,54 +18,79 @@ def home():
 
 @app.route('/olxauto')
 def olxauto():
+    print("Here auto")
     url = make_url(request.args.to_dict())
-    return redirect(url_for('.crawl_olx', url=url))
+    n_pages = request.args['n_pages']
+    return redirect(url_for('.crawl_olx', url=url,n_pages=n_pages))
+
 @app.route('/olx')
 def crawl_olx():
     start_time = time.time()
     url = request.args['url']
-    print(url)
+    n_pages = 1
+    try:
+        n_pages = int(request.args['n_pages'].encode('utf-8'))
+    except:
+        print("Error")
+    # req_dates = request.args['req_dates']
     if url is not None:
         page = requests.get(url, headers=headers)
-        soup = BeautifulSoup(page.content, 'html.parser')
+        soup = BeautifulSoup(page.content, 'html.parser')    
+
+        pager = soup.find_all("div",{"class":"pager"})
+        if( pager.__len__() == 1):
+            last_page = pager[0].find_all("span",{"class":"item fleft"})
+            last_page = last_page[last_page.__len__()-1]
+            max_pages = last_page.getText().strip()
+        else:
+            max_pages = 1
+        
+        if(n_pages == "4"):
+            n_pages = max_pages
+        else:       
+            n_pages = min([max_pages,n_pages])   
+
         items_owner = []
         items_broker = []
-        for item in soup.find_all('div', attrs={"class": "ads__item__info"}):
-            post_date = item.find_all('p',{"class":"ads__item__date"})[0].contents[0].strip().lower()
-            title = item.find_all('a',{"class":"ads__item__ad--title"})[0].get('title').strip()
-            # title = title.encode("utf-8")
-            print(title)
-            print(post_date)
+        for p in range(1,n_pages+1):
+            print(p)
+            url = url + "&page=" + str(p)
+            page = requests.get(url, headers=headers)
+            soup = BeautifulSoup(page.content, 'html.parser')
+            for item in soup.find_all('div', attrs={"class": "ads__item__info"}):
+                post_date = item.find_all('p',{"class":"ads__item__date"})[0].contents[0].strip().lower()
+                title = item.find_all('a',{"class":"ads__item__ad--title"})[0].get('title').strip()
+                # title = title.encode("utf-8")
+                print(title,post_date)
+                p = item.find_all('p', attrs={"class": "ads__item__price"})[0]
+                price = p.getText().lower().replace('\t', '').replace('\n', '').replace('negotiable', '').replace('egp',
+                                                                                                                    '')
+                loc = item.find_all('p', attrs={"class": "ads__item__location"})[0]
+                location = loc.getText().lower().replace('\t', '').replace('\n', '')
+                link  = item.find_all('a', href=True)[0]
+                item_link = link['href']
+                item_link = item_link.replace(".eg/", ".eg/en/")
+                print(item_link)
+                item_page = requests.get(item_link, headers=headers)
+                soup_page = BeautifulSoup(item_page.content, 'html.parser')
 
-            p = item.find_all('p', attrs={"class": "ads__item__price"})[0]
-            price = p.getText().lower().replace('\t', '').replace('\n', '').replace('negotiable', '').replace('egp',
-                                                                                                                '')
-            loc = item.find_all('p', attrs={"class": "ads__item__location"})[0]
-            location = loc.getText().lower().replace('\t', '').replace('\n', '')
-            link  = item.find_all('a', href=True)[0]
-            item_link = link['href']
-            item_link = item_link.replace(".eg/", ".eg/en/")
-            print(item_link)
-            item_page = requests.get(item_link, headers=headers)
-            soup_page = BeautifulSoup(item_page.content, 'html.parser')
-
-            info = {
-                "title":title,
-                "url": item_link,
-                "price": price,
-                "location": location,
-                "source": "olx"
-            }
-            details = item_details_olx(soup_page)             
-            info.update({'details': details })
-            check = details["Broker"]
-            if "Yes" in check:
-                items_broker.append(info)
-            else:
-                items_owner.append(info)      
+                info = {
+                    "title":title,
+                    "url": item_link,
+                    "price": price,
+                    "location": location,
+                    "post_date": post_date
+                }
+                details = item_details_olx(soup_page)             
+                info.update({'details': details })
+                check = details["Broker"]
+                if "Yes" in check:
+                    items_broker.append(info)
+                else:
+                    items_owner.append(info)      
+            
         end_time = time.time()
         delta_time = end_time-start_time    
-        
         # return jsonify({'Brokers': items_broker, 'Owners' : items_owner, 'count_owners': items_owner.__len__(),'count_brokers': items_broker.__len__(),'atime':delta_time})
         data = [items_owner ,items_broker,items_owner.__len__(),items_broker.__len__(),url]
         return render_template("view.html",data=data)
@@ -160,6 +185,7 @@ def make_url(args):
     if(not keyword == ""):
         url= url + "&q="+keyword
 
+    print("Here url",url)
     return url
 
 def conv_cat(option):
