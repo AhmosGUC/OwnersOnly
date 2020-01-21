@@ -18,16 +18,17 @@ def home():
 
 @app.route('/olxauto')
 def olxauto():
-    print("Here auto")
     url = make_url(request.args.to_dict())
     n_pages = request.args['n_pages']
     req_dates = request.args['req_dates']
-    return redirect(url_for('.crawl_olx', url=url,n_pages=n_pages,req_dates = req_dates))
+    threshold = request.args['threshold']
+    return redirect(url_for('.crawl_olx', url=url,n_pages=n_pages,req_dates = req_dates, threshold=threshold))
 
 @app.route('/olx')
 def crawl_olx():
     start_time = time.time()
     url = request.args['url']
+    threshold = int(request.args['threshold'])
     n_pages = 1
     try:
         n_pages = int(request.args['n_pages'].encode('utf-8'))
@@ -48,14 +49,14 @@ def crawl_olx():
         if( pager.__len__() == 1):
             last_page = pager[0].find_all("span",{"class":"item fleft"})
             last_page = last_page[last_page.__len__()-1]
-            max_pages = last_page.getText().strip()
+            max_pages = int(last_page.getText().strip())
         else:
             max_pages = 1
         
         if(n_pages == "4"):
             n_pages = max_pages
         else:       
-            n_pages = min([max_pages,n_pages])   
+            n_pages = min([max_pages,int(n_pages)])   
 
         items_owner = []
         items_broker = []  
@@ -66,7 +67,11 @@ def crawl_olx():
                 url = url + "&page=" + str(p)
             page = requests.get(url, headers=headers)
             soup = BeautifulSoup(page.content, 'html.parser')
-            for item in soup.find_all('div', attrs={"class": "ads__item__info"}):
+            list_soup = soup.find_all('div', attrs={"class": "ads__item__info"})
+            print(list_soup.__len__())
+            pointer = 0
+            for item in list_soup :
+                pointer = pointer + 1
                 post_date = item.find_all('p',{"class":"ads__item__date"})[0].contents[0].strip().lower()
                 title = item.find_all('a',{"class":"ads__item__ad--title"})[0].get('title').strip()
                 if date_flag:
@@ -79,7 +84,7 @@ def crawl_olx():
                         link  = item.find_all('a', href=True)[0]
                         item_link = link['href']
                         item_link = item_link.replace(".eg/", ".eg/en/")
-                        print(item_link)
+                        print(pointer,item_link)
                         item_page = requests.get(item_link, headers=headers)
                         soup_page = BeautifulSoup(item_page.content, 'html.parser')
 
@@ -90,7 +95,7 @@ def crawl_olx():
                             "location": location,
                             "post_date": post_date
                         }
-                        details = item_details_olx(soup_page)             
+                        details = item_details_olx(soup_page,threshold)             
                         info.update({'details': details })
                         check = details["Broker"]
                         if "Yes" in check:
@@ -117,7 +122,7 @@ def crawl_olx():
                         "location": location,
                         "post_date": post_date
                     }
-                    details = item_details_olx(soup_page)             
+                    details = item_details_olx(soup_page,threshold)             
                     info.update({'details': details })
                     check = details["Broker"]
                     if "Yes" in check:
@@ -135,7 +140,7 @@ def crawl_olx():
         return jsonify(msg), 400
 
 
-def item_details_olx(soup):
+def item_details_olx(soup,threshold):
     """
     Type
     """
@@ -145,19 +150,7 @@ def item_details_olx(soup):
     ad_desc = soup.find_all('div',{'id':'textContent'})[0]
     ad_desc = ad_desc.getText().replace('\n'," ").strip().lower()
 
-    ad_desc_ar = ad_desc.encode("utf-8")
-
-    dict.update({"description":ad_desc})
-    if "owner" in ad_desc :
-        dict.update({"contain keywords en":"yes"})
-    else:
-        dict.update({"contain keywords en":"no"})
-    
-    if b'\xd9\x85\xd8\xa7\xd9\x84\xd9\x83' in ad_desc_ar :
-        dict.update({"contain keywords ar":"yes"})
-    else:
-        dict.update({"contain keywords ar":"no"})
-    
+    dict.update({"description":ad_desc})    
     
     try:
         user_box = soup.find_all('div',{"class":"user-box__info"})[0]
@@ -177,7 +170,7 @@ def item_details_olx(soup):
         
         dict.update({"number of ads":ad_list.__len__()})
 
-        if(dict["number of ads"]>10):
+        if(dict["number of ads"]>threshold):
             dict.update({"Broker":"Yes"})
         else:
             dict.update({"Broker":"No"})
@@ -221,7 +214,6 @@ def make_url(args):
     if(not keyword == ""):
         url= url + "&q="+keyword
 
-    print("Here url",url)
     return url
 
 def conv_cat(option):
@@ -250,4 +242,4 @@ def conv_cat(option):
 
 if __name__ == '__main__':
     app.config['JSON_AS_ASCII'] = False
-    app.run(debug=True, host='0.0.0.0', port=3000)
+    app.run(debug=False, host='0.0.0.0', port=3000)

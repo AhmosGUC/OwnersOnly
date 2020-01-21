@@ -506,6 +506,11 @@
                         </select>
                       </div>      
                       
+                      <div class="form-group">
+                        <label>Broker if more than</label>
+                        <input type="number" class="form-control" min="1" max="10" value="10" name="threshold">
+                      </div>      
+                      
                   </div>
                   
             </div> 
@@ -519,9 +524,14 @@
         <div class="row">
           <div class="col-9">
             <div class="form-group">
-                <label>Search Using Link</label>
-                <input type="text" class="form-control" placeholder="Put OLX Link Here" name="url">                    
+              <label>Search Using Link</label>
+              <input type="text" class="form-control" placeholder="Put OLX Link Here" name="url">                    
             </div>
+            
+            <div class="form-group">
+              <label>Broker if more than</label>
+              <input type="number" class="form-control" min="1" max="10" value="10" name="threshold">
+            </div>            
           </div>
           <div class="col-3">
             <div class="form-group">
@@ -540,7 +550,8 @@
                   <option selected value="1">Today And Yesterday</option>  
                   <option value="2">All</option>  
               </select>
-            </div>          
+            </div>
+            
 
           </div>
             <input type="submit" class="btn btn-danger wrn-btn"> 
