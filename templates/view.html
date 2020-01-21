@@ -46,18 +46,18 @@
                 {% for item in data[1] %}
                     <div class="card border-dark">
                         <div class="card-header"><a href="{{ item['url'] }}">{{ item['title'] }}</a></div>
-                        <strong class="card-body">
+                        <div class="card-body">
                             <h5 class="card-title"><a href="{{item['details']['user profile']}}">{{ item['details']['user name'] }}</a></h5>
                             <p class="card-text">Number of Ads : {{ item['details']['number of ads'] }} - <strong style="color: #e63e38;">Broker</strong></p>
                             <p class="card-text">Location : {{ item['location'] }}</p>
                             <p class="card-text">Price : {{ item['price'] }}</p>
                             <p class="card-text">Description : <small>{{ item['details']['description'][0:100] }}</small></p>
+                            <div class="card-footer">
+                                <small class="text-muted">{{ item['post_date'] }}</small>
+                            </div>
                         </div>
-                        <div class="card-footer">
-                            <small class="text-muted">{{ item['post_date'] }}</small>
-                        </div>
+                        {% endfor %}  
                     </div>
-                {% endfor %}  
             </div>
         </div>
     </div>
