@@ -60,15 +60,15 @@ def crawl_olx():
         items_owner = []
         items_broker = []  
         for p in range(1,n_pages+1):
-            print(p)
-            url = url + "&page=" + str(p)
+            if(url[-1] == "/"):
+                url = url + "?page=" + str(p)
+            else:
+                url = url + "&page=" + str(p)
             page = requests.get(url, headers=headers)
             soup = BeautifulSoup(page.content, 'html.parser')
             for item in soup.find_all('div', attrs={"class": "ads__item__info"}):
                 post_date = item.find_all('p',{"class":"ads__item__date"})[0].contents[0].strip().lower()
                 title = item.find_all('a',{"class":"ads__item__ad--title"})[0].get('title').strip()
-                # title = title.encode("utf-8")
-                print(title,post_date)
                 if date_flag:
                     if "today" in post_date or "yesterday" in post_date:
                         p = item.find_all('p', attrs={"class": "ads__item__price"})[0]
