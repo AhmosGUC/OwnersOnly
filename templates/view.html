@@ -14,13 +14,17 @@
     $(document).ready(function(){
              const queryString = window.location.search; 
              const urlParams = new URLSearchParams(queryString);
-             const url = urlParams.get('url')
+             var url = urlParams.get('url')
+             var original_url = url.replace(/\"/g,"")
+             console.log(url)
+             var url = url.replace("?", "25874").replace(/&/g,"47852");
+             console.log(url)
              const req_dates = urlParams.get('req_dates')
              const threshold = urlParams.get('threshold')
              const n_pages = urlParams.get('n_pages')
 
              $.get(`/olx?url=${url}&threshold=${threshold}&n_pages=${n_pages}&req_dates=${req_dates}`, function(data, status){
-                $("#original-url").attr("href", url);
+                $("#original-url").attr("href", original_url);
                 $("#number-of-ads").text(data.length);
                 var number_broker_ads = 0
                 var number_owner_ads = 0

@@ -19,6 +19,7 @@ def home():
 @app.route('/olxauto')
 def olxauto():
     url = make_url(request.args.to_dict())
+    url = '\"'+url+'\"'
     n_pages = request.args['n_pages']
     req_dates = request.args['req_dates']
     threshold = request.args['threshold']
@@ -31,7 +32,8 @@ def view_page():
 @app.route('/olx')
 def crawl_olx():
     start_time = time.time()
-    url = request.args['url']
+    url = str(request.args['url']).replace("25874","?").replace("47852","&").replace('\"','')
+    print(url)
     threshold = int(request.args['threshold'])
     n_pages = 1
     try:
@@ -56,18 +58,20 @@ def crawl_olx():
             max_pages = int(last_page.getText().strip())
         else:
             max_pages = 1
-        
+        print("Max pages",max_pages)
+        print("Requested pages",n_pages)
         if(n_pages == "4"):
             n_pages = max_pages
         else:       
             n_pages = min([max_pages,int(n_pages)])   
-
+        print("after check",n_pages)
         response = []
         for p in range(1,n_pages+1):
             if(url[-1] == "/"):
                 url = url + "?page=" + str(p)
             else:
                 url = url + "&page=" + str(p)
+            # print(url)    
             page = requests.get(url, headers=headers)
             soup = BeautifulSoup(page.content, 'html.parser')
             list_soup = soup.find_all('div', attrs={"class": "ads__item__info"})
@@ -172,19 +176,19 @@ def make_url(args):
     else:
         url = url + "?"    
     if(not compound == 'all'):
-        url= url+ "&search[filter_enum_compound]="+compound
+        url= url+ "search[filter_enum_compound]="+compound+"&"
     if(not price_from == ""):
-        url= url + "&search[filter_float_price:from]="+price_from
+        url= url + "search[filter_float_price:from]="+price_from+"&"
     if(not price_to == ""):
-        url= url + "&search[filter_float_price:to]="+price_to
+        url= url + "search[filter_float_price:to]="+price_to+"&"
     if(not area_from == ""):
-        url= url + "&search[filter_float_area:from]="+area_from
+        url= url + "search[filter_float_area:from]="+area_from+"&"
     if(not area_to == ""):
-        url= url + "&search[filter_float_area:to]="+area_to
+        url= url + "search[filter_float_area:to]="+area_to+"&"
     if(not payment_option == "123"):
-        url= url + "&search[filter_enum_payment_options]="+payment_option
+        url= url + "search[filter_enum_payment_options]="+payment_option+"&"
     if(not keyword == ""):
-        url= url + "&q="+keyword
+        url= url + "q="+keyword
 
     return url
 
