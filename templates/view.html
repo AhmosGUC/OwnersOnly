@@ -9,62 +9,100 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <title>Results</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script >
+    $(document).ready(function(){
+             const queryString = window.location.search; 
+             const urlParams = new URLSearchParams(queryString);
+             const url = urlParams.get('url')
+             const req_dates = urlParams.get('req_dates')
+             const threshold = urlParams.get('threshold')
+             const n_pages = urlParams.get('n_pages')
+
+             $.get(`/olx?url=${url}&threshold=${threshold}&n_pages=${n_pages}&req_dates=${req_dates}`, function(data, status){
+                $("#original-url").attr("href", url);
+                $("#number-of-ads").text(data.length);
+                var number_broker_ads = 0
+                var number_owner_ads = 0
+                for (let index = 0; index < data.length; index++) {
+                    var url_single = data[index][0];
+                    $.get(`/property?url=${url_single}&threshold=${threshold}`, function(data_inner, status){
+                        var broker = data_inner["Broker"]
+                        var location = data[index][1];
+                        var price = data[index][2];
+                        var post_date = data[index][3];
+                        var title = data[index][4];
+                        var description = data_inner['description']
+                        description = description.substring(0,Math.min(description.length,100));
+                        if(broker=="Yes"){
+                            number_broker_ads+=1;
+                            $("#number-broker-ads").text(number_broker_ads);
+                            $("#brokers-card").append(`
+                            <div class="card border-dark">
+                                <div class="card-header"><a href="${url_single}">${title}</a></div>
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="${data_inner["user profile"]}">${ data_inner["user name"] }</a></h5>
+                                    <p class="card-text">Number of Ads : ${ data_inner['number of ads'] } - <strong style="color: #e63e38;">Broker</strong></p>
+                                    <p class="card-text">Location :  ${ location } </p>
+                                    <p class="card-text">Price : ${ price }</p>
+                                    <p class="card-text">Description : <small>${ description }</small></p>
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-muted">${ post_date }</small>
+                                </div>
+                            </div>`);
+                        }else{
+                            number_owner_ads+=1
+                            $("#number-owner-ads").text(number_owner_ads);
+                            $("#owners-card").append(`
+                            <div class="card">
+                                <div class="card-header"><a href="${url}">${ title }</a></div>
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="${data_inner["user profile"]}">${ data_inner["user name"] }</a></h5>
+                                    <p class="card-text">Number of Ads : ${ data_inner['number of ads'] } - <strong style="color: seagreen;">Owner</strong></p>
+                                    <p class="card-text">Location :  ${ location } </p>
+                                    <p class="card-text">Price : ${ price }</p>
+                                    <p class="card-text">Description : <small>${ data_inner['description'] }</small></p>
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-muted">${ post_date }</small>
+                                </div>
+                            </div>`);
+                        }
+                    });       
+                }
+            });            
+    });
+    </script>
   </head>
   <body>
-      
     <div class="container">
         <div class="row">
-            <h4>Owners Ads : {{ data[2] }} ads And Broker Ads : {{ data[3] }}</h4>
+            <h4>Total Ads : <span id="number-of-ads"></span> & Owners Ads : <span id="number-owner-ads"></span> ads & Broker Ads : <span id="number-broker-ads"></span></h4>
         </div>
+
         <div class="row">
-            <a class="badge badge-primary" target="_blank" href="{{ data[4] }}"> Olx Original Link </a>
+            <a class="badge badge-primary" target="_blank" id="original-url"> Olx Original Link </a>
         </div>
+        
+        <hr />
+        
         <div class="row">
             <h1>Owners only</h1>
-            <div class="card-columns">
-                {% for item in data[0] %}
-                    <div class="card">
-                        <div class="card-header"><a href="{{ item['url'] }}">{{ item['title'] }}</a></div>
-                        <div class="card-body">
-                            <h5 class="card-title"><a href="{{item['details']['user profile']}}">{{ item['details']['user name'] }}</a></h5>
-                            <p class="card-text">Number of Ads : {{ item['details']['number of ads'] }} - <strong style="color: seagreen;">Owner</strong></p>
-                            <p class="card-text">Location : {{ item['location'] }}</p>
-                            <p class="card-text">Price : {{ item['price'] }}</p>
-                            <p class="card-text">Description : <small>{{ item['details']['description'][0:100] }}</small></p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">{{ item['post_date'] }}</small>
-                        </div>
-                    </div>
-                {% endfor %}  
+            <div class="card-columns" id="owners-card">
+ 
             </div>
-        </div>
+        </div>        
         <hr />
         <div class="row">
             <h1>Brokers only</h1>
-            <div class="card-columns">
-                {% for item in data[1] %}
-                    <div class="card border-dark">
-                        <div class="card-header"><a href="{{ item['url'] }}">{{ item['title'] }}</a></div>
-                        <div class="card-body">
-                            <h5 class="card-title"><a href="{{item['details']['user profile']}}">{{ item['details']['user name'] }}</a></h5>
-                            <p class="card-text">Number of Ads : {{ item['details']['number of ads'] }} - <strong style="color: #e63e38;">Broker</strong></p>
-                            <p class="card-text">Location : {{ item['location'] }}</p>
-                            <p class="card-text">Price : {{ item['price'] }}</p>
-                            <p class="card-text">Description : <small>{{ item['details']['description'][0:100] }}</small></p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">{{ item['post_date'] }}</small>
-                        </div>
-                    </div>
-                {% endfor %}  
+            <div class="card-columns" id="brokers-card">
+ 
             </div>
         </div>
     </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   </body>
