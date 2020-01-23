@@ -11,6 +11,7 @@
     <title>Results</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script >
+    // $('[data-toggle="tooltip"]').tooltip()
     $(document).ready(function(){
              const queryString = window.location.search; 
              const urlParams = new URLSearchParams(queryString);
@@ -37,7 +38,7 @@
                         var post_date = data[index][3];
                         var title = data[index][4];
                         var description = data_inner['description']
-                        description = description.substring(0,Math.min(description.length,100));
+                        var description_short = description.substring(0,Math.min(description.length,100));
                         if(broker=="Yes"){
                             number_broker_ads+=1;
                             $("#number-broker-ads").text(number_broker_ads);
@@ -49,7 +50,7 @@
                                     <p class="card-text">Number of Ads : ${ data_inner['number of ads'] } - <strong style="color: #e63e38;">Broker</strong></p>
                                     <p class="card-text">Location :  ${ location } </p>
                                     <p class="card-text">Price : ${ price }</p>
-                                    <p class="card-text">Description : <small>${ description }</small></p>
+                                    <p class="card-text" data-toggle="tooltip" data-placement="top" title="${description}">Description : <small>${ description_short }</small></p>
                                 </div>
                                 <div class="card-footer">
                                     <small class="text-muted">${ post_date }</small>
@@ -66,7 +67,7 @@
                                     <p class="card-text">Number of Ads : ${ data_inner['number of ads'] } - <strong style="color: seagreen;">Owner</strong></p>
                                     <p class="card-text">Location :  ${ location } </p>
                                     <p class="card-text">Price : ${ price }</p>
-                                    <p class="card-text">Description : <small>${ data_inner['description'] }</small></p>
+                                    <p class="card-text" data-toggle="tooltip" data-placement="top" title="${description}">Description : <small>${ description_short }</small></p>
                                 </div>
                                 <div class="card-footer">
                                     <small class="text-muted">${ post_date }</small>
