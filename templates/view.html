@@ -17,9 +17,7 @@
              const urlParams = new URLSearchParams(queryString);
              var url = urlParams.get('url')
              var original_url = url.replace(/\"/g,"")
-             console.log(url)
              var url = url.replace("?", "25874").replace(/&/g,"47852");
-             console.log(url)
              const req_dates = urlParams.get('req_dates')
              const threshold = urlParams.get('threshold')
              const n_pages = urlParams.get('n_pages')
@@ -32,6 +30,7 @@
                 for (let index = 0; index < data.length; index++) {
                     var url_single = data[index][0];
                     $.get(`/property?url=${url_single}&threshold=${threshold}`, function(data_inner, status){
+                        var ad_link = data[index][0];
                         var broker = data_inner["Broker"]
                         var location = data[index][1];
                         var price = data[index][2];
@@ -44,7 +43,7 @@
                             $("#number-broker-ads").text(number_broker_ads);
                             $("#brokers-card").append(`
                             <div class="card border-dark">
-                                <div class="card-header"><a href="${url_single}">${title}</a></div>
+                                <div class="card-header"><a href="${ad_link}">${title}</a></div>
                                 <div class="card-body">
                                     <h5 class="card-title"><a href="${data_inner["user profile"]}">${ data_inner["user name"] }</a></h5>
                                     <p class="card-text">Number of Ads : ${ data_inner['number of ads'] } - <strong style="color: #e63e38;">Broker</strong></p>
@@ -61,7 +60,7 @@
                             $("#number-owner-ads").text(number_owner_ads);
                             $("#owners-card").append(`
                             <div class="card">
-                                <div class="card-header"><a href="${url_single}">${title}</a></div>
+                                <div class="card-header"><a href="${ad_link}">${title}</a></div>
                                 <div class="card-body">
                                     <h5 class="card-title"><a href="${data_inner["user profile"]}">${ data_inner["user name"] }</a></h5>
                                     <p class="card-text">Number of Ads : ${ data_inner['number of ads'] } - <strong style="color: seagreen;">Owner</strong></p>
