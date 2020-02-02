@@ -36,7 +36,7 @@ def view_page():
 def crawl_olx():
     start_time = time.time()
     # url = str(request.args['url']).replace("25874","?").replace("47852","&").replace('\"','')
-    url = str(request.query_string.split("url=",1)[1])
+    url = str(request.query_string.decode("utf-8").split("url=",1)[1])
     app.logger.info(url)
     threshold = int(request.args['threshold'])
     n_pages = "1"
