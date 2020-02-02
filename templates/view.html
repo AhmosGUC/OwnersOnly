@@ -1,35 +1,86 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <title>Results</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script >
-    // $('[data-toggle="tooltip"]').tooltip()
-    $(document).ready(function(){
-             const queryString = window.location.search; 
-             const urlParams = new URLSearchParams(queryString);
-             var url = urlParams.get('url')
-             var original_url = url.replace(/\"/g,"")
-             var url = url.replace("?", "25874").replace(/&/g,"47852");
-             const req_dates = urlParams.get('req_dates')
-             const threshold = urlParams.get('threshold')
-             const n_pages = urlParams.get('n_pages')
 
-             $.get(`/olx?url=${url}&threshold=${threshold}&n_pages=${n_pages}&req_dates=${req_dates}`, function(data, status){
-                $("#original-url").attr("href", original_url);
-                $("#number-of-ads").text(data.length);
+    <style>
+        li {
+            margin: 10px 10px 10px 10px;
+        }
+
+        a:visited {
+            color: darkblue
+        }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../static/jquery.bootpag.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <h4>Total Ads : <span id="number-of-ads"></span> & Owners Ads : <span id="number-owner-ads"></span> ads &
+                Broker Ads : <span id="number-broker-ads"></span></h4>
+        </div>
+
+        <div class="row">
+            <a class="badge badge-primary" target="_blank" id="original-url"> Olx Original Link </a>
+        </div>
+
+        <div class="row">
+            <h4 class="col" id="page-selected">
+
+            </h4>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div id="page-selection"></div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <h1>Owners only</h1>
+            <ol class="list-group-flush" id="owners-card"></ol>
+        </div>
+        <hr />
+        <div class="row">
+            <h1 id="click-to-show" class="btn btn-outline-primary btn-lg">Brokers only</h1>
+            <ul class="list-group-flush" id="brokers-card"></ul>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
+
+    <script>
+        function call_olx(url, threshold, page, req_dates, original_url) {
+
+            $.get(`/olx?threshold=${threshold}&n_pages=${page}&req_dates=${req_dates}&url=${url}`, (data, status) => {
+
                 var number_broker_ads = 0
                 var number_owner_ads = 0
+                $("#number-of-ads").text(data.length);
                 for (let index = 0; index < data.length; index++) {
                     var url_single = data[index][0];
-                    $.get(`/property?url=${url_single}&threshold=${threshold}`, function(data_inner, status){
+                    $.get(`/property?url=${url_single}&threshold=${threshold}`, (data_inner, status) => {
                         var ad_link = data[index][0];
                         var broker = data_inner["Broker"]
                         var location = data[index][1];
@@ -37,15 +88,16 @@
                         var post_date = data[index][3];
                         var title = data[index][4];
                         var description = data_inner['description']
-                        var description_short = description.substring(0,Math.min(description.length,100));
-                        if(broker=="Yes"){
-                            number_broker_ads+=1;
+                        var description_short = description.substring(0, Math.min(description.length,
+                            100));
+                        if (broker == "Yes") {
+                            number_broker_ads += 1;
                             $("#number-broker-ads").text(number_broker_ads);
-                            $("#brokers-card").append(`
+                            $("#brokers-card").append(`<li class="list-group-item">
                             <div class="card border-dark">
-                                <div class="card-header"><a href="${ad_link}">${title}</a></div>
+                                <div class="card-header"><a href="${ad_link}" target="_blank">${title}</a></div>
                                 <div class="card-body">
-                                    <h5 class="card-title"><a href="${data_inner["user profile"]}">${ data_inner["user name"] }</a></h5>
+                                    <h5 class="card-title"><a href="${data_inner["user profile"]}" target="_blank">${ data_inner["user name"] }</a></h5>
                                     <p class="card-text">Number of Ads : ${ data_inner['number of ads'] } - <strong style="color: #e63e38;">Broker</strong></p>
                                     <p class="card-text">Location :  ${ location } </p>
                                     <p class="card-text">Price : ${ price }</p>
@@ -54,15 +106,16 @@
                                 <div class="card-footer">
                                     <small class="text-muted">${ post_date }</small>
                                 </div>
-                            </div>`);
-                        }else{
-                            number_owner_ads+=1
+                            </div>
+                            </li>`);
+                        } else {
+                            number_owner_ads += 1
                             $("#number-owner-ads").text(number_owner_ads);
-                            $("#owners-card").append(`
+                            $("#owners-card").append(`<li class="list-group-item">
                             <div class="card">
-                                <div class="card-header"><a href="${ad_link}">${title}</a></div>
+                                <div class="card-header"><a href="${ad_link}" target="_blank">${title}</a></div>
                                 <div class="card-body">
-                                    <h5 class="card-title"><a href="${data_inner["user profile"]}">${ data_inner["user name"] }</a></h5>
+                                    <h5 class="card-title"><a href="${data_inner["user profile"]}" target="_blank">${ data_inner["user name"] }</a></h5>
                                     <p class="card-text">Number of Ads : ${ data_inner['number of ads'] } - <strong style="color: seagreen;">Owner</strong></p>
                                     <p class="card-text">Location :  ${ location } </p>
                                     <p class="card-text">Price : ${ price }</p>
@@ -71,43 +124,78 @@
                                 <div class="card-footer">
                                     <small class="text-muted">${ post_date }</small>
                                 </div>
-                            </div>`);
+                            </div>
+                            </li>`);
                         }
-                    });       
+                    });
                 }
-            });            
-    });
+            });
+        }
+        $(document).ready(function () {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            var url = urlParams.get('url')
+            var original_url = url.replace(/\'/g, "")
+            // var url = url.replace("?", "25874").replace(/&/g, "47852");
+            const req_dates = urlParams.get('req_dates')
+            const threshold = urlParams.get('threshold')
+            const n_pages = urlParams.get('n_pages')
+            var required_pages = 0;
+
+
+            $.get(`/getpages?url=${original_url}`, function (maxpages, status) {
+                if (n_pages == -1) {
+                    required_pages = maxpages;
+                } else {
+                    required_pages = Math.min(n_pages, maxpages);
+                }
+                $("#original-url").attr("href", original_url);
+                $("#page-selected").empty();
+                $("#page-selected").text("Page 1");
+                call_olx(url, threshold, "1", req_dates, original_url);
+
+                $('#page-selection').bootpag({
+                    total: required_pages,
+                    page: 1,
+                    maxVisible: 10
+                }).on('page', function (event, num) {
+                    var original_url_page = original_url
+                    switch (original_url[original_url.length - 1]) {
+                        case "\/":
+                            original_url_page += "?page=" + num;
+                            break;
+                        case "?":
+                            original_url_page += "page=" + num;
+                            break;
+                        case "&":
+                            original_url_page += "page=" + num;
+                            break;
+                        default:
+                            original_url_page += "&page=" + num;
+                            break;
+                    }
+
+
+                    window.stop()
+                    $("#page-selected").empty();
+                    $("#page-selected").text(`Page ${num}`);
+                    $("#owners-card").empty();
+                    $("#brokers-card").empty();
+                    $("#number-owner-ads").empty();
+                    $("#number-broker-ads").empty();
+                    $("#number-of-ads").empty();
+                    $("#original-url").attr("href", original_url_page);
+                    call_olx(url, threshold, num, req_dates, original_url)
+                });
+            });
+            $("#brokers-card").hide(); // by default hide brokers
+            $("#click-to-show").on("click", (event) => {
+                $("#brokers-card").toggle();
+            });
+
+        });
     </script>
-  </head>
-  <body>
-    <div class="container">
-        <div class="row">
-            <h4>Total Ads : <span id="number-of-ads"></span> & Owners Ads : <span id="number-owner-ads"></span> ads & Broker Ads : <span id="number-broker-ads"></span></h4>
-        </div>
 
-        <div class="row">
-            <a class="badge badge-primary" target="_blank" id="original-url"> Olx Original Link </a>
-        </div>
-        
-        <hr />
-        
-        <div class="row">
-            <h1>Owners only</h1>
-            <div class="card-columns" id="owners-card">
- 
-            </div>
-        </div>        
-        <hr />
-        <div class="row">
-            <h1>Brokers only</h1>
-            <div class="card-columns" id="brokers-card">
- 
-            </div>
-        </div>
-    </div>
+</body>
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </body>
 </html>
