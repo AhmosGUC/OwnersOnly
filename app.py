@@ -10,6 +10,7 @@ import os
 import datetime
 
 app = Flask(__name__)
+app.secret_key = 'zs$9XmxEkAV*%XK5CX7+tFTB!N_@V-uMzBRk9QqJ7+gSp%-swujT&!UH@P5!Pp$S'
 log = logging.getLogger('werkzeug')
 log.disabled = True
 
