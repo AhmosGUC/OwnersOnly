@@ -271,5 +271,6 @@ def conv_cat(option):
 
 if __name__ == '__main__':
     app.config['JSON_AS_ASCII'] = False
-    app.secret_key = os.urandom(12)
+    # app.secret_key = os.urandom(12)
+    app.secret_key = 'zs$9XmxEkAV*%XK5CX7+tFTB!N_@V-uMzBRk9QqJ7+gSp%-swujT&!UH@P5!Pp$S'
     app.run(debug=True, host='0.0.0.0', port=3000)
