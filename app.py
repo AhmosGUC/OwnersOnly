@@ -21,7 +21,10 @@ headers = {'user-agent': user_agent}
 
 @app.route('/login', methods=['POST'])
 def do_admin_login():
-    if request.form['password'] == '@0wner$0nly' and request.form['username'].lower() == 'stars':
+    date_val = datetime.datetime.now()
+    var_val = date_val.strftime("%m")
+    pass_val = "@0wner$@lloWed"+var_val
+    if request.form['password'] == pass_val and request.form['username'].lower() == 'stars':
         if request.form.get('remember'):
             session.permanent = True
             app.permanent_session_lifetime = datetime.timedelta(weeks=1)
